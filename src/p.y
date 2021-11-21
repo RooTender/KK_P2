@@ -51,7 +51,7 @@ PROGRAM_NAME: %empty
 
 SECTION_LIST: %empty
    | SECTION
-   | SECTION SECTION_LIST
+   | SECTION_LIST SECTION
  /* Possibly empty sequence of sections (SECTION) */
 
 SECTION: CONST_SECT
@@ -65,10 +65,11 @@ SECTION: CONST_SECT
     procedure (PROCEDURE) followed by a semicolon */
 
 
-CONST_SECT: KW_CONST CONST_LIST ';' { found("CONST_SECT"); }
+CONST_SECT: KW_CONST CONST_LIST ';' { found("CONST_SECT", ""); }
  // keyword CONST, constant declaration list (CONST_LIST) followed by a semicolon
 
-CONST_LIST: CONST ';' CONST_LIST
+CONST_LIST: CONST
+   | CONST_LIST ';' CONST
  // list of constant declarations (CONST) separated with semicolons
 
 CONST: IDENT '=' LITERAL { found("CONST", $1); }
@@ -84,7 +85,7 @@ VAR_SECT: KW_VAR VAR_LIST ';' { found("VAR_SECT", ""); }
  // eg. "Var i : Integer; c : Char;
 
 VAR_LIST: VAR
-   | VAR ';' VAR_LIST
+   | VAR_LIST ';' VAR
  /* list of declarations of variables (VAR) separated with semicolons */
 
 VAR: IDENT_LIST ':' DATA_TYPE
@@ -103,7 +104,6 @@ DATA_TYPE: DATA_TYPE_NAME
 
 DATA_TYPE_NAME: KW_INTEGER
    | KW_REAL
-   | KW_STRING
    | KW_CHAR
    | KW_STRING
  /* One of the lfollowing keywords: Integer, Real, Char, String */
@@ -123,7 +123,7 @@ RECORD_TYPE: KW_RECORD FIELD_LIST KW_END
  /* keyword RECORD, field list (FIELD_LIST), and keyword END */
 
 FIELD_LIST: FIELD
-   | FIELD ';' FIELD_LIST
+   | FIELD_LIST ';' FIELD
  /* list of fields (FIELD) separated with semicolons */
 
 FIELD: IDENT_LIST ':' DATA_TYPE
@@ -147,8 +147,8 @@ FORM_PARAMS: %empty
  /* Either empty, or a list of formal parameters (FORM_PARAM_LIST)
     in parentheses */
 
-FORM_PARAM_LIST: FORM_PARAMS
-   | FORM_PARAMS ',' FORM_PARAM_LIST
+FORM_PARAM_LIST: FORM_PARAM
+   | FORM_PARAM_LIST ',' FORM_PARAM
  /* list of formal parameters (FORM_PARAM) separated with commas */
 
 FORM_PARAM: IDENT_LIST ':' DATA_TYPE
@@ -222,7 +222,7 @@ EXPR: NUMBER
    | EXPR '+' EXPR
    | EXPR '-' EXPR
    | EXPR '*' EXPR
-   | EXPR '-' EXPR
+   | EXPR '/' EXPR
    | '-' EXPR %prec NEG
    | '(' EXPR ')'
  /* One of the following:
@@ -262,7 +262,7 @@ LOG_EXPR: EXPR '<' EXPR
    | EXPR '>' EXPR
    | EXPR LE EXPR
    | EXPR '=' EXPR
-   | EXPR LE EXPR
+   | '(' EXPR ')' 
  /* Either two expressions EXPR linked with <, >, LE, =,
    or a logical expression in parentheses */
 
