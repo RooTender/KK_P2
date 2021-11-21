@@ -41,6 +41,7 @@ void found( const char *nonterminal, const char *value );
 Grammar: /* empty */ { yyerror( "Empty input source is not valid!" ); YYERROR; }
 	| error
 	  /* Start here! */
+   
 ;
 
 /* PROGRAM_NAME */
@@ -56,6 +57,7 @@ Grammar: /* empty */ { yyerror( "Empty input source is not valid!" ); YYERROR; }
     section of declaractions of variables (VAR_SECT),
     functions (FUNCTION) folloowed by a semicolon,
     procedure (PROCEDURE) followed by a semicolon */
+
 
 /* CONST_SECT */
  /* keyword CONST, constant declaration list (CONST_LIST)
