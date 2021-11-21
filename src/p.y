@@ -88,7 +88,7 @@ VAR_LIST: VAR
    | VAR_LIST ';' VAR
  /* list of declarations of variables (VAR) separated with semicolons */
 
-VAR: IDENT_LIST ':' DATA_TYPE
+VAR: IDENT_LIST ':' DATA_TYPE { found("VAR", ""); }
  /* identifier list (IDENT_LIST), colon, and data type (DATA_TYPE) */
 
 IDENT_LIST: IDENT
@@ -131,15 +131,15 @@ FIELD: IDENT_LIST ':' DATA_TYPE
 
  /* PROCEDURE AND FUNCTION DECLARATIONS */
 
-PROCEDURE: KW_PROCEDURE FUN_HEAD ':' SECTION_LIST BLOCK
+PROCEDURE: KW_PROCEDURE FUN_HEAD ':' SECTION_LIST BLOCK { found("PROCEDURE", $2); }
  /* keyword PROCEDURE, function header (FUN_HEAD), semicolon, section list
     (SECTION_LIST), and block (BLOCK) */
 
-FUNCTION: KW_FUNCTION FUN_HEAD ':' DATA_TYPE ';' SECTION_LIST BLOCK
+FUNCTION: KW_FUNCTION FUN_HEAD ':' DATA_TYPE ';' SECTION_LIST BLOCK { found("FUNCTION", $2); }
 /* keyword FUNCTION, function head (FUN_HEAD), colon, return data type
     (DATA_TYPE), semicolon, section list (SECTION_LIST), and block (BLOCK) */
 
-FUN_HEAD: IDENT FORM_PARAMS
+FUN_HEAD: IDENT FORM_PARAMS { found("FUN_HEAD", $1); }
 /* identifier (IDENT) followed by formal parameters (FORM_PARAMS) */
 
 FORM_PARAMS: %empty
@@ -151,12 +151,12 @@ FORM_PARAM_LIST: FORM_PARAM
    | FORM_PARAM_LIST ',' FORM_PARAM
  /* list of formal parameters (FORM_PARAM) separated with commas */
 
-FORM_PARAM: IDENT_LIST ':' DATA_TYPE
+FORM_PARAM: IDENT_LIST ':' DATA_TYPE { found("FORM_PARAM", ""); }
  /* identifier list (IDENT_LIST), colon, and data type (DATA_TYPE) */
 
-BLOCK: KW_BEGIN KW_END
-   | KW_BEGIN INSTR_LIST KW_END
-   | KW_BEGIN INSTR_LIST ';' KW_END
+BLOCK: KW_BEGIN KW_END { found("BLOCK", ""); }
+   | KW_BEGIN INSTR_LIST KW_END { found("BLOCK", ""); }
+   | KW_BEGIN INSTR_LIST ';' KW_END { found("BLOCK", ""); }
  /* Either keyword BEGIN, and keyword END,
     or keyword BEGIN, instruction list (INSTR_LIST), and keyword END,
     or keyword BEGIN, instruction list, semicolon, and keyword END */
@@ -166,7 +166,7 @@ INSTR_LIST: INSTRUCTION
    | INSTRUCTION ';' INSTR_LIST
 /* Nonempty list of instructions (INSTRUCTION) separated with semicolons */
 
-INSTRUCTION:  FUNCT_CALL
+INSTRUCTION: FUNCT_CALL
    | FOR_INSTR
    | ASSIGN_INSTR
    | IF_INSTR
@@ -178,7 +178,7 @@ INSTRUCTION:  FUNCT_CALL
 
  /* SIMPLE AND COMPLEX INSTRUCTIONS */
 
-FUNCT_CALL: IDENT '(' ACT_PARAMS ')'
+FUNCT_CALL: IDENT '(' ACT_PARAMS ')' { found("FUNCT_CALL", $3); }
  /* identifier followed by actual parameters (ACT_PARAMS) */
 
 ACT_PARAMS: %empty
@@ -189,9 +189,9 @@ ACT_PARAM_LIST: ACT_PARAM
    | ACT_PARAM ',' ACT_PARAM_LIST
  /* Nonempty list of actual parameters (ACT_PARAM) separated with commas */
 
-ACT_PARAM: STRING_CONST
-   | NUMBER
-   | FUNCT_CALL
+ACT_PARAM: STRING_CONST { found("ACT_PARAM", ""); }
+   | NUMBER { found("ACT_PARAM", ""); }
+   | FUNCT_CALL { found("ACT_PARAM", ""); }
  /* Either: string constant (STRING_CONST),
     number (NUMBER), 
     or function call (FUNCT_CALL) */
@@ -201,7 +201,7 @@ NUMBER: INTEGER_CONST
  /* Either an integer constant (INTEGER_CONST)
     or a real constant (FLOAT_CONST) */
 
-ASSIGN_INSTR: IDENT QUALIF ASSIGN EXPR
+ASSIGN_INSTR: IDENT QUALIF ASSIGN EXPR { found("ASSIGN_INSTR", $1); }
  /* identifier, qualifier (QUALIF), assignment operator (ASSIGN),
     and expression (EXPR) */
 
@@ -236,7 +236,7 @@ EXPR: NUMBER
     minus sign followed by expression (use NEG precedence),
     or expression in parentheses */
 
-FOR_INSTR: KW_FOR IDENT ASSIGN CONST_VAR TO_DOWNTO CONST_VAR KW_DO BLOCK_INSTR
+FOR_INSTR: KW_FOR IDENT ASSIGN CONST_VAR TO_DOWNTO CONST_VAR KW_DO BLOCK_INSTR { found("FOR_INSTR", ""); }
  /* keyword FOR, identifier, assignment operator (ASSIGN),
     constant or variable (CONST_VAR), keyword TO or DOWNTO (TO_DOWNTO),
     constant or variable (CONST_VAR), keyword DO,
@@ -254,7 +254,7 @@ BLOCK_INSTR: BLOCK
    | INSTRUCTION
  /* Either a block (BLOCK), or a single instruction (INSTRUCTION) */ 
 
-IF_INSTR: KW_IF LOG_EXPR KW_THEN BLOCK_INSTR ELSE_PART
+IF_INSTR: KW_IF LOG_EXPR KW_THEN BLOCK_INSTR ELSE_PART { found("IF_INSTR", ""); }
  /* keyword IF, logical expression LOG_EXPR, keyword THEN,
     instruction block BLOCK_INSTR, and else part (ELSE_PART) */
 
