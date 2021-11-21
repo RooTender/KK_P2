@@ -92,7 +92,7 @@ VAR: IDENT_LIST ':' DATA_TYPE { found("VAR", ""); }
  /* identifier list (IDENT_LIST), colon, and data type (DATA_TYPE) */
 
 IDENT_LIST: IDENT
-   | IDENT ';' IDENT_LIST
+   | IDENT ',' IDENT_LIST
  /* list of identifiers (IDENT) separated with commas */
 
 DATA_TYPE: DATA_TYPE_NAME
@@ -113,7 +113,7 @@ ARRAY_TYPE: KW_ARRAY '[' DIMENSIONS ']' KW_OF DATA_TYPE
    right square bracket, keyword OF, and data type (DATA_TYPE) */
 
 DIMENSIONS: DIMENSION
-   | DIMENSION ';' DIMENSIONS 
+   | DIMENSION ',' DIMENSIONS 
  /* list of dimensions (DIMENSION) separated with commas */
 
 DIMENSION: LITERAL RANGE LITERAL
@@ -131,7 +131,7 @@ FIELD: IDENT_LIST ':' DATA_TYPE
 
  /* PROCEDURE AND FUNCTION DECLARATIONS */
 
-PROCEDURE: KW_PROCEDURE FUN_HEAD ':' SECTION_LIST BLOCK { found("PROCEDURE", $2); }
+PROCEDURE: KW_PROCEDURE FUN_HEAD ';' SECTION_LIST BLOCK { found("PROCEDURE", $2); }
  /* keyword PROCEDURE, function header (FUN_HEAD), semicolon, section list
     (SECTION_LIST), and block (BLOCK) */
 
