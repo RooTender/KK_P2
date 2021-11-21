@@ -178,7 +178,7 @@ INSTRUCTION: FUNCT_CALL
 
  /* SIMPLE AND COMPLEX INSTRUCTIONS */
 
-FUNCT_CALL: IDENT '(' ACT_PARAMS ')' { found("FUNCT_CALL", $3); }
+FUNCT_CALL: IDENT '(' ACT_PARAMS ')' { found("FUNCT_CALL", $1); }
  /* identifier followed by actual parameters (ACT_PARAMS) */
 
 ACT_PARAMS: %empty
