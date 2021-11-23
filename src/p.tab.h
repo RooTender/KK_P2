@@ -59,27 +59,25 @@ extern int yydebug;
     KW_THEN = 265,
     KW_ELSE = 266,
     KW_CHAR = 267,
-    KW_STRING = 268,
-    KW_INTEGER = 269,
-    KW_REAL = 270,
-    KW_FOR = 271,
-    KW_TO = 272,
-    KW_DO = 273,
-    KW_FUNCTION = 274,
-    KW_PROCEDURE = 275,
+    KW_INTEGER = 268,
+    KW_REAL = 269,
+    KW_FOR = 270,
+    KW_TO = 271,
+    KW_DO = 272,
+    KW_FUNCTION = 273,
+    KW_PROCEDURE = 274,
+    KW_DOWNTO = 275,
     KW_ARRAY = 276,
     KW_RECORD = 277,
     KW_OF = 278,
-    KW_DOWNTO = 279,
-    ASSIGN = 280,
-    LE = 281,
-    RANGE = 282,
-    IDENT = 283,
-    STRING_CONST = 284,
-    FLOAT_CONST = 285,
-    INTEGER_CONST = 286,
-    CHARACTER_CONST = 287,
-    NEG = 288
+    ASSIGN = 279,
+    LE = 280,
+    RANGE = 281,
+    IDENT = 282,
+    STRING_CONST = 283,
+    FLOAT_CONST = 284,
+    INTEGER_CONST = 285,
+    CHARACTER_CONST = 286
   };
 #endif
 
@@ -87,13 +85,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "p.y"
+#line 17 "p.y"
+ /* DEKLARACJA TYPU TOKENÓW */
+	char s[ MAX_STR_LEN + 1 ]; /* pole tekstowe dla nazw itp. */
+	int i; /* pole całkowite */
+	double d; /* pole zmiennoprzecinkowe */
 
-	char s[ MAX_STR_LEN + 1 ];
-	int i;
-	double d;
-
-#line 97 "p.tab.h"
+#line 95 "p.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
